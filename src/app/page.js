@@ -23,7 +23,7 @@ export default function Pokedex() {
   const [pokemonName, setPokemonName] = useState([])
   const [pokemonId, setPokemonId] = useState([1])
   const [pokemonsObject, setPokemonsObject] = useState([])
-  const [currentPageUrl, setcurrentPageUrl] = useState("https://pokeapi.co/api/v2/pokemon?limit=999&offset=0")
+  const [currentPageUrl, setcurrentPageUrl] = useState("https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0")
   const [pokemonsObjectUpdate, setPokemonsObjectUpdate] = useState(false)
   const [loading, setLoading] = useState(true)
   const [pokemonRange, setPokemonRange] = useState(10)
@@ -47,29 +47,34 @@ export default function Pokedex() {
   }
   
   useEffect(() => {
-    setLoading(true)
     setPokemonsObjectUpdate(true)
+    setLoading(true)
     axios.get(currentPageUrl).then(res => {
       setLoading(false)
       setPokemonName(res.data.results.map(p => p.name))
       setPokemonId(res.data.results.map(p => p.url.slice(-4,-1)))
     }) //gets all pokemon list
     setPokemonsObject(initializePokemon(pokemonName, pokemonId))
-  }, [pokemonsObjectUpdate])
+  }, [loading]);
 
   function showMore() {
     setPokemonRange(pokemonRange+10)
+    setPokemonsObjectUpdate(true)
+    console.log("Clicked")
   }
+  console.log(pokemonsObjectUpdate)
+  console.log(pokemonRange)
+  console.log(pokemonsObject)
   
   if (loading) {
     return (
-      <h1 class="header">Loading...</h1>
+      <h1 className="header">Loading...</h1>
     )
   }
   return (
     <div>
-      <h1 class="header">Pokedex</h1>
-      <input class="searchbar"
+      <h1 className="header">Pokedex</h1>
+      <input className="searchbar"
         type="text"
         placeholder="Search Pokemon Here"
       />
