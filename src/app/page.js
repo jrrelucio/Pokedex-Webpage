@@ -40,7 +40,18 @@ export default function Pokedex() {
       else if (pokemonId[i][0] === '/') {
         pokemonId[i] = "0" + pokemonId[i].slice(1,3)
       }
-      pokemonsObject.push({name: pokemonName[i], id: pokemonId[i]})
+      
+      let pokemonURL = "https://pokeapi.co/api/v2/pokemon/" + pokemonName[i]
+      let arrTypes = []
+      axios.get(pokemonURL).then(res => {
+        let pokemonTypes = res.data.types
+        
+        for (let i = 0; i < pokemonTypes.length; i++) {
+          let type = pokemonTypes[i]
+          arrTypes.push(type.type.name)
+        }
+      })
+      pokemonsObject.push({name: pokemonName[i], id: pokemonId[i], types: arrTypes})
     }
     setPokemonId(pokemonId)
     return pokemonsObject

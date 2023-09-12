@@ -16,6 +16,7 @@ export default function PokemonList({ pokemonsObject }) {
             width={70}
             height={70}
           />
+          <div>{pokemon.types}</div>
         </div>
       ))}
     </div>
